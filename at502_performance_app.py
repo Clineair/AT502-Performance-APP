@@ -28,17 +28,13 @@ GLIDE_RATIO                    = 8.0      # approx clean
 # Runway condition performance factors (multipliers)
 # These are approximate / conservative values – adjust based on real data/POH
 RUNWAY_CONDITION_FACTORS = {
-    "Dry":                      1.00,
-    "Wet":                      1.25,
-    "Wet with visible moisture": 1.35,
+    "Dry hard surface":         1.00,
+    "Wet hard surface":         1.25,
     "Standing water":           1.60,
-    "Snow":                     1.50,
-    "Compacted snow":           1.30,
-    "Slush":                    1.70,
-    "Ice":                      2.00,
-    "Frost":                    1.15,
-    "Contaminated (mix)":       1.55,
-    "Not reported / Unknown":   1.40
+    "Grass":                    1.70,
+    "Dirt or gravel":           1.15,
+    "Rough with potholes":      1.55,
+    "Poor surface":             1.40,
 }
 
 # =============================================================================
@@ -225,6 +221,16 @@ if st.button("Calculate Performance", type="primary"):
     ax.grid(True, linestyle='--', alpha=0.7)
     ax.minorticks_on()
     st.pyplot(fig)
+st.markdown("---")
+st.subheader("Rate this Performance Calculator")
 
+# Star rating widget
+rating = st.feedback("stars")
+
+if rating is not None:
+    stars = rating + 1  # 1 to 5 stars
+    st.success(f"Thank you! You rated this tool {stars} ★")
+    # Optional: you can save it to session state or a file later
+    st.session_state["app_rating"] = stars
 st.markdown("---")
 st.caption("Disclaimer: This is an educational prototype. Do not use for actual flight planning. Always refer to the official Air Tractor AT-502B Pilot Operating Handbook.")
