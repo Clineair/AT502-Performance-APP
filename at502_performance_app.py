@@ -224,6 +224,9 @@ if st.button("Calculate Performance", type="primary"):
 st.markdown("---")
 st.subheader("Rate this Performance Calculator")
 
+
+st.markdown("---")
+st.caption("Disclaimer: This is an educational prototype. Do not use for actual flight planning. Always refer to the official Air Tractor AT-502B Pilot Operating Handbook.")
 # Star rating widget
 rating = st.feedback("stars")
 
@@ -232,5 +235,3 @@ if rating is not None:
     st.success(f"Thank you! You rated this tool {stars} ★")
     # Optional: you can save it to session state or a file later
     st.session_state["app_rating"] = stars
-st.markdown("---")
-st.caption("Disclaimer: This is an educational prototype. Do not use for actual flight planning. Always refer to the official Air Tractor AT-502B Pilot Operating Handbook.")
