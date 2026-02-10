@@ -1,3 +1,45 @@
+# Add near RATINGS_FILE
+RUNWAY_FILE = "runway_conditions.json"
+
+RUNWAY_CONDITIONS = [
+    "Dry",
+    "Wet",
+    "Wet with visible moisture",
+    "Standing water",
+    "Snow",
+    "Compacted snow",
+    "Slush",
+    "Ice",
+    "Frost",
+    "Contaminated (mix)",
+    "Not reported / Unknown"
+]
+
+# Add these two functions (you can put them near your rating functions)
+def load_json(file_path, default=None):
+    if default is None:
+        default = {}
+    if os.path.exists(file_path):
+        try:
+            with open(file_path, "r") as f:
+                return json.load(f)
+        except:
+            return default
+    return default
+
+def save_json(file_path, data):
+    with open(file_path, "w") as f:
+        json.dump(data, f, indent=2)
+
+def get_saved_runway_condition(item_id):
+    data = load_json(RUNWAY_FILE)
+    return data.get(item_id)
+
+def save_runway_condition(item_id, condition):
+    data = load_json(RUNWAY_FILE)
+    data[item_id] = condition
+    save_json(RUNWAY_FILE, data)
+
 import streamlit as st
 
 import numpy as np
