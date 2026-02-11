@@ -253,7 +253,16 @@ def save_feedback(rating, comment):
 
 st.markdown("---")
 st.subheader("Rate this AT-502B Calculator")
-
+if st.button("Submit Rating & Comment"):
+    if rating is not None:
+        stars = rating + 1
+        save_feedback(stars, comment)
+        st.success(f"Thank you! You rated {stars} stars.")
+        if comment.strip():
+            st.caption("Comment saved.")
+        st.rerun()
+    else:
+        st.warning("Please select a star rating.")
 feedback = load_feedback()
 prev_rating = feedback.get("rating")
 prev_comment = feedback.get("comment", "")
@@ -277,13 +286,4 @@ comment = st.text_area(
     placeholder="What would make this calculator more useful? Any bugs or missing features?"
 )
 
-if st.button("Submit Rating & Comment"):
-    if rating is not None:
-        stars = rating + 1
-        save_feedback(stars, comment)
-        st.success(f"Thank you! You rated {stars} stars.")
-        if comment.strip():
-            st.caption("Comment saved.")
-        st.rerun()
-    else:
-        st.warning("Please select a star rating.")
+
