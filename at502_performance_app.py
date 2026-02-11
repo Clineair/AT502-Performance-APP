@@ -226,12 +226,64 @@ st.subheader("Rate this Performance Calculator")
 
 
 st.markdown("---")
-st.caption("Disclaimer: This is an educational prototype. Do not use for actual flight planning. Always refer to the official Air Tractor AT-502B Pilot Operating Handbook.")
+# ────────────────────────────────────────────────
+# Feedback - Star Rating + Comment Box
+# ────────────────────────────────────────────────
+
+import json
+import os   # (if not already imported at the top)
+
+FEEDBACK_FILE = "feedback.json"
+
+def load_feedback():
+    if os.path.exists(FEEDBACK_FILE):
+        try:
+            with open(FEEDBACK_FILE, "r") as f:
+                return json.load(f)
+        except:
+            return {}
+    return {}
+
+def save_feedback(rating, comment):
+    data = load_feedback()
+    data["rating"] = rating
+    data["comment"] = comment.strip()
+    with open(FEEDBACK_FILE, "w") as f:
+        json.dump(data, f, indent=2)
+
+st.markdown("---")
+st.subheader("Rate this AT-502B Calculator")
+
+feedback = load_feedback()
+prev_rating = feedback.get("rating")
+prev_comment = feedback.get("comment", "")
+
+if prev_rating is not None:
+    st.feedback("stars", value=prev_rating - 1, disabled=True)
+    st.success(f"You previously rated this tool {prev_rating} stars")
+    if prev_comment:
+        st.info(f"Previous comment: {prev_comment}")
+else:
+    st.caption("Your feedback helps us improve the tool!")
+
 # Star rating widget
 rating = st.feedback("stars")
 
-if rating is not None:
-    stars = rating + 1  # 1 to 5 stars
-    st.success(f"Thank you! You rated this tool {stars} ★")
-    # Optional: you can save it to session state or a file later
-    st.session_state["app_rating"] = stars
+# Comment box
+comment = st.text_area(
+    "Comments, suggestions, or issues",
+    value=prev_comment,
+    height=120,
+    placeholder="What would make this calculator more useful? Any bugs or missing features?"
+)
+
+if st.button("Submit Rating & Comment"):
+    if rating is not None:
+        stars = rating + 1
+        save_feedback(stars, comment)
+        st.success(f"Thank you! You rated {stars} stars.")
+        if comment.strip():
+            st.caption("Comment saved.")
+        st.rerun()
+    else:
+        st.warning("Please select a star rating.")
