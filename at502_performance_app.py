@@ -222,11 +222,6 @@ if st.button("Calculate Performance", type="primary"):
     ax.minorticks_on()
     st.pyplot(fig)
 st.markdown("---")
-st.subheader("Rate this Performance Calculator")
-
-
-st.markdown("---")
-
 # ────────────────────────────────────────────────
 # Feedback – Star Rating + Comment Box
 # ────────────────────────────────────────────────
