@@ -236,7 +236,7 @@ rating = st.feedback("stars")
 comment = st.text_area(
     "Comments, suggestions or issues",
     height=120,
-    placeholder="What would make this tool more useful? What would you like to see? Missing features?..."
+    placeholder="What would make this tool more useful? What would you like to see? Questions about the output?..."
 )
 
 # Submit logic – now safe because rating is always defined
