@@ -226,64 +226,33 @@ st.subheader("Rate this Performance Calculator")
 
 
 st.markdown("---")
+
 # ────────────────────────────────────────────────
-# Feedback - Star Rating + Comment Box
+# Feedback – Star Rating + Comment Box
 # ────────────────────────────────────────────────
-
-import json
-import os   # (if not already imported at the top)
-
-FEEDBACK_FILE = "feedback.json"
-
-def load_feedback():
-    if os.path.exists(FEEDBACK_FILE):
-        try:
-            with open(FEEDBACK_FILE, "r") as f:
-                return json.load(f)
-        except:
-            return {}
-    return {}
-
-def save_feedback(rating, comment):
-    data = load_feedback()
-    data["rating"] = rating
-    data["comment"] = comment.strip()
-    with open(FEEDBACK_FILE, "w") as f:
-        json.dump(data, f, indent=2)
 
 st.markdown("---")
 st.subheader("Rate this AT-502B Calculator")
+
+# Define the star rating widget FIRST
+rating = st.feedback("stars")
+
+# Comment box (always visible)
+comment = st.text_area(
+    "Comments, suggestions or issues",
+    height=120,
+    placeholder="What would make this tool more useful? Any bugs? Missing features?..."
+)
+
+# Submit logic – now safe because rating is always defined
 if st.button("Submit Rating & Comment"):
     if rating is not None:
         stars = rating + 1
-        save_feedback(stars, comment)
-        st.success(f"Thank you! You rated {stars} stars.")
+        st.success(f"Thank you! You rated **{stars} stars**")
         if comment.strip():
-            st.caption("Comment saved.")
-        st.rerun()
+            st.caption(f"Comment: {comment}")
+        else:
+            st.caption("No comment provided.")
     else:
-        st.warning("Please select a star rating.")
-feedback = load_feedback()
-prev_rating = feedback.get("rating")
-prev_comment = feedback.get("comment", "")
-
-if prev_rating is not None:
-    st.feedback("stars", value=prev_rating - 1, disabled=True)
-    st.success(f"You previously rated this tool {prev_rating} stars")
-    if prev_comment:
-        st.info(f"Previous comment: {prev_comment}")
-else:
-    st.caption("Your feedback helps us improve the tool!")
-
-# Star rating widget
-rating = st.feedback("stars")
-
-# Comment box
-comment = st.text_area(
-    "Comments, suggestions, or issues",
-    value=prev_comment,
-    height=120,
-    placeholder="What would make this calculator more useful? Any bugs or missing features?"
-)
-
+        st.warning("Please select a star rating before submitting.")
 
